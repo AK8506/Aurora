@@ -24,7 +24,7 @@ struct ForYouView: View {
 
     let model = GenerativeModel(
         name: "gemini-1.5-pro",
-        apiKey: "AIzaSyC83PbtVzqrGY5KmTzS1ow0a5V9wr_J0ns"
+        apiKey: "AIzaSyB_qxzPhvouxFbHn8vGPNopyNDIsxaTRhc"
     )
 
     var body: some View {
@@ -132,40 +132,41 @@ struct ForYouView: View {
       **Return only valid JSON and nothing else. Do not include explanations or any other text.**
       """
 
-      do {
-          let response = try await model.generateContent(prompt)
-          print("📥 Raw Gemini Response:\n\(response)")
+    do {
+        let response = try await model.generateContent(prompt)
+        print("📥 Raw Gemini Response:\n\(response)")
 
-          // Extract JSON using regex (removes extra text)
-          if let jsonStart = response.range(of: "[")?.lowerBound,
-             let jsonEnd = response.range(of: "]", options: .backwards)?.upperBound {
-              let jsonString = String(response[jsonStart..<jsonEnd])
-              print("✅ Extracted JSON:\n\(jsonString)")
+        // Extract JSON manually using rangeOf
+        if let jsonStart = response.range(of: "[")?.lowerBound,
+           let jsonEnd = response.range(of: "]", options: .backwards)?.upperBound {
+            let jsonString = String(response[jsonStart..<jsonEnd])
+            print("✅ Extracted JSON:\n\(jsonString)")
 
-              guard let jsonData = jsonString.data(using: .utf8) else {
-                  errorMessage = "Invalid JSON encoding."
-                  return
-              }
+            guard let jsonData = jsonString.data(using: .utf8) else {
+                errorMessage = "Invalid JSON encoding."
+                return
+            }
 
-              let decoder = JSONDecoder()
-              let topics = try decoder.decode([Topic].self, from: jsonData)
+            let decoder = JSONDecoder()
+            let topics = try decoder.decode([Topic].self, from: jsonData)
 
-              if topics.isEmpty {
-                  errorMessage = "No topics received."
-                  return
-              }
+            if topics.isEmpty {
+                errorMessage = "No topics received."
+                return
+            }
 
-              topicQueue = topics.map { ($0.title, $0.content) }
-              print("📌 Loaded \(topicQueue.count) topics.")
+            topicQueue = topics.map { ($0.title, $0.content) }
+            print("📌 Loaded \(topicQueue.count) topics.")
 
-          } else {
-              errorMessage = "Failed to extract JSON from response."
-          }
+        } else {
+            errorMessage = "Failed to extract JSON from response."
+        }
 
-      } catch {
-          errorMessage = "Failed to fetch topics: \(error.localizedDescription)"
-          print("❌ JSON Decoding Error: \(error.localizedDescription)")
-      }
+    } catch {
+        errorMessage = "Failed to fetch topics: \(error.localizedDescription)"
+        print("❌ JSON Decoding Error: \(error.localizedDescription)")
+    }
+
   }
 
 }
