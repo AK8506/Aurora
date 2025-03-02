@@ -11,7 +11,7 @@ import SwiftUI
 struct HackCU11App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView() // HomeView should handle displaying CardView if needed
         }
     }
 }
