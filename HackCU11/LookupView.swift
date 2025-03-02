@@ -5,17 +5,17 @@
 //  Created by Akshay Patnaik on 3/1/25.
 // AIzaSyC83PbtVzqrGY5KmTzS1ow0a5V9wr_J0ns
 
-
 import SwiftUI
 
 struct LookupView: View {
+    @Environment(\.presentationMode) var presentationMode  // Allows dismissing the view
     @State private var inputText = ""
     @State private var apiOutput = ""
     @State private var isLoading = false
     @State private var currTitle = ""
     @State private var articles: [Article] = []
     @State private var selectedArticle: Article? = nil
-    
+
     struct Article: Identifiable {
         let id = UUID()
         let title: String
@@ -30,101 +30,120 @@ struct LookupView: View {
     )
 
     var body: some View {
-        VStack {
-            // Input field with search icon
-            HStack {
-                TextField("Enter Semantic Scholar ID or Topic", text: $inputText)
-                    .padding(.vertical, 10)
-                    .padding(.leading, 40)
-                    .background(Color.clear)
-                    .overlay(
+        NavigationStack {
+            VStack {
+                // Top left back button
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss() // Dismiss and go back
+                    }) {
                         HStack {
-                            Image(systemName: "magnifyingglass")
+                            Image(systemName: "arrow.left")
                                 .foregroundColor(.purple)
-                                .padding(.leading, 8)
-                            Spacer()
+                            Text("For You")
+                                .foregroundColor(.purple)
                         }
-                    )
-                    .padding(.horizontal)
-            }
-
-            // Underline for input field
-            Rectangle()
-                .frame(height: 2)
-                .foregroundColor(.purple)
-                .padding(.bottom, 15)
-
-            // Fetch data button
-            Button(action: {
-                Task {
-                    isLoading = true
-                    await fetchRelevantArticles()
-                    isLoading = false
-                }
-            }) {
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .padding()
-                        .background(Color.purple)
-                        .cornerRadius(10)
-                        .shadow(radius: 3)
-                } else {
-                    Text("Fetch Relevant Articles")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.purple)
-                        .cornerRadius(10)
-                        .shadow(radius: 3)
-                }
-            }
-            .padding(.horizontal, 16)
-            .disabled(isLoading)
-
-            // Display list of relevant articles
-            List(articles) { article in
-                VStack(alignment: .leading) {
-                    Text(article.title)
-                        .font(.headline)
-                    Text(article.summary)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                    Button("More Info") {
-                        selectedArticle = article
                     }
-                    .foregroundColor(.blue)
+                    .padding()
+                    Spacer()
                 }
-                .padding()
-            }
 
-            Spacer()
-        }
-        .padding()
-        .overlay(
-            Group {
-                if let selected = selectedArticle {
-                    ZStack {
-                        Color.black.opacity(0.4)
-                            .edgesIgnoringSafeArea(.all)
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(selected.title)
-                                .font(.headline)
-                            Text(selected.details)
-                                .font(.body)
-                            Button("Close") {
-                                selectedArticle = nil
+                // Input field with search icon
+                HStack {
+                    TextField("Enter Semantic Scholar ID or Topic", text: $inputText)
+                        .padding(.vertical, 10)
+                        .padding(.leading, 40)
+                        .background(Color.clear)
+                        .overlay(
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.purple)
+                                    .padding(.leading, 8)
+                                Spacer()
                             }
-                            .foregroundColor(.red)
-                        }
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
+                        )
+                        .padding(.horizontal)
+                }
+
+                // Underline for input field
+                Rectangle()
+                    .frame(height: 2)
+                    .foregroundColor(.purple)
+                    .padding(.bottom, 15)
+
+                // Fetch data button
+                Button(action: {
+                    isLoading = true
+                    articles.removeAll()
+                    Task {
+                        await fetchRelevantArticles()
+                        isLoading = false
+                    }
+                }) {
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .padding()
+                            .background(Color.purple)
+                            .cornerRadius(10)
+                            .shadow(radius: 3)
+                    } else {
+                        Text("Fetch Relevant Articles")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.purple)
+                            .cornerRadius(10)
+                            .shadow(radius: 3)
                     }
                 }
+                .padding(.horizontal, 16)
+                .disabled(isLoading)
+
+                // Display list of relevant articles
+                List(articles) { article in
+                    VStack(alignment: .leading) {
+                        Text(article.title)
+                            .font(.headline)
+                        Text(article.summary)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                        Button("More Info") {
+                            selectedArticle = article
+                        }
+                        .foregroundColor(.blue)
+                    }
+                    .padding()
+                }
+
+                Spacer()
             }
-        )
+            .padding()
+            .overlay(
+                Group {
+                    if let selected = selectedArticle {
+                        ZStack {
+                            Color.black.opacity(0.4)
+                                .edgesIgnoringSafeArea(.all)
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(selected.title)
+                                    .font(.headline)
+                                Text(selected.details)
+                                    .font(.body)
+                                Button("Close") {
+                                    selectedArticle = nil
+                                }
+                                .foregroundColor(.red)
+                            }
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
+                        }
+                    }
+                }
+            )
+        }
     }
 
     // Fetch relevant articles
