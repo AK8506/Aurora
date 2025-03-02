@@ -7,11 +7,19 @@
 
 import SwiftUI
 
+
 @main
 struct HackCU11App: App {
-    var body: some Scene {
-        WindowGroup {
-          ForYouView() // HomeView should handle displaying CardView if needed
+    @StateObject var preferences = UserPreferences()
+
+//    var body: some Scene {
+//        WindowGroup {
+//          ForYouView() // HomeView should handle displaying CardView if needed
+//        }
+//    }
+        var body: some Scene {
+            WindowGroup {
+                ForYouView(preferences: preferences)
+            }
         }
-    }
 }
