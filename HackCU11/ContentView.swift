@@ -20,20 +20,60 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            TextField("Enter Semantic Scholar ID or search query", text: $inputText)
-                .padding()
-                .border(Color.gray, width: 1)
-
-            Button("Fetch Data") {
+            HStack{
+                TextField("Enter Semantic Scholar ID or Topic", text: $inputText)
+                    .padding(.vertical, 1) // Add padding above and below the text
+                    .padding(.horizontal, 30)
+                    .background(Color.clear) // Ensures no default background
+                    .overlay(
+                        HStack {
+                            Image(systemName: "magnifyingglass") // Adds search icon
+                                .foregroundColor(.purple)
+                            Spacer()
+                        }
+                            .padding(.leading, 8)
+                    )
+                    .padding(.horizontal) // Horizontal padding for spacing
+                
+                
+            }
+            // Underline
+            Rectangle()
+                .frame(height: 2) // Thin underline
+                .foregroundColor(.purple) // Custom underline color
+                .padding(.bottom,15)
+            
+            Button(action: {
                 Task {
                     await fetchDataFromAPI()
                 }
+            }) {
+                Text("Fetch Data")
+                    .font(.headline) // Makes text stand out
+                    .foregroundColor(.white) // White text
+                    .padding() // Adds spacing inside button
+                    //.frame(maxWidth: .infinity) // Expands width to match search bar
+                    .background(Color.purple) // Purple background
+                    //.clipShape(Capsule()) // Rounded shape (pill-like)
+                    .shadow(radius: 3) // Optional: Adds a subtle shadow
+                    .cornerRadius(10)
             }
-            .padding()
-
+            .padding(.horizontal, 16) // Matches the search bar’s width
+            
+            
             ScrollView {
                 Text(apiOutput)
-                    .padding()
+                        .padding()
+                        .frame(maxWidth: .infinity, minHeight: 500, maxHeight: 300) // Fixed card size
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.gray.opacity(0.1)) // Light gray background
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.black, lineWidth: 2) // Black border
+                        )
+                        .padding()
             }
         }
         .padding()
