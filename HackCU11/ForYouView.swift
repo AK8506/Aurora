@@ -17,7 +17,7 @@ struct ForYouView: View {
 
   let model = GenerativeModel(
     name: "gemini-1.5-pro",
-    apiKey: "key"
+    apiKey: "AIzaSyC83PbtVzqrGY5KmTzS1ow0a5V9wr_J0ns"
   )
 
   var body: some View {
@@ -74,6 +74,9 @@ struct ForYouView: View {
       preferences.dislike(topic)
     }
 
+    // Reset current topic before fetching the next one
+    currentTopic = nil
+
     Task {
       await fetchNextTopic()
     }
@@ -82,6 +85,7 @@ struct ForYouView: View {
   // MARK: - Fetch Next Topic from Gemini
   func fetchNextTopic() async {
     isLoading = true
+    currentTopic = nil
     defer { isLoading = false }
     errorMessage = ""
 
@@ -94,14 +98,20 @@ struct ForYouView: View {
 
     let prompt = """
       You are a recommendation system. The user likes topics: \(likes). The user dislikes topics: \(dislikes).
-      Suggest ONE new academic research topic that aligns more with the user’s likes and avoids the user’s dislikes.
+      Suggest ONE random new academic research topic that aligns more with the user’s likes and avoids the user’s dislikes.
+      Do not completely avoid topics the user dislikes, but rather show them it less often.
+      The research topic you choose must be a random choice each time.
       Provide a short, paragraph-long summary of that topic. Return the title on one line, then a blank line, then the summary.
+      Please limit responses to around 150 words.
       """
 
     do {
       let response = try await model.generateContent(prompt)
       let parts = response.components(separatedBy: "\n\n")
-      let title = parts.first ?? "Untitled"
+      guard let title = parts.first, !title.isEmpty else {
+        errorMessage = "Invalid response format"
+        return
+      }
       let content = parts.dropFirst().joined(separator: "\n\n")
 
       currentTopic = (

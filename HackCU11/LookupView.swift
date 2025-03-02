@@ -28,7 +28,7 @@ struct LookupView: View {
 
     let model = GenerativeModel(
         name: "gemini-1.5-pro",
-        apiKey: "AIzaSyC83PbtVzqrGY5KmTzS1ow0a5V9wr_J0ns"
+        apiKey: "AIzaSyB_qxzPhvouxFbHn8vGPNopyNDIsxaTRhc"
     )
 
     var body: some View {
