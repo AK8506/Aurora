@@ -4,8 +4,8 @@
 //
 //  Created by Akshay Patnaik on 3/1/25.
 //
-// Akshay: AIzaSyC83PbtVzqrGY5KmTzS1ow0a5V9wr_J0ns
-// Sohan: 
+// Akshay:  AIzaSyC83PbtVzqrGY5KmTzS1ow0a5V9wr_J0ns
+// Sohan:   AIzaSyB_qxzPhvouxFbHn8vGPNopyNDIsxaTRhc
 
 import SwiftUI
 
@@ -34,21 +34,6 @@ struct LookupView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // Top left back button
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss() // Dismiss and go back
-                    }) {
-                        HStack {
-                            Image(systemName: "arrow.left")
-                                .foregroundColor(.purple)
-                            Text("For You")
-                                .foregroundColor(.purple)
-                        }
-                    }
-                    .padding()
-                    Spacer()
-                }
 
                 // Input field with search icon
                 HStack {
