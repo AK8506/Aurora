@@ -195,6 +195,10 @@
 			);
 			mainGroup = 6FD69C5E2D7389B40001498C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6F38181C2D73DDBB00932C02 /* XCRemoteSwiftPackageReference "ArxivKit" */,
+				6F38181D2D73DDDD00932C02 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6FD69C682D7389B40001498C /* Products */;
 			projectDirPath = "";
@@ -558,6 +562,26 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6F38181C2D73DDBB00932C02 /* XCRemoteSwiftPackageReference "ArxivKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ivicamil/ArxivKit";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 3.0.0;
+				minimumVersion = 2.1.0;
+			};
+		};
+		6F38181D2D73DDDD00932C02 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 6FD69C5F2D7389B40001498C /* Project object */;
 }
