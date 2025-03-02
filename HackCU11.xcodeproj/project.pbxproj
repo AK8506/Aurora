@@ -29,9 +29,33 @@
 		6FD69C812D7389B60001498C /* HackCU11UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackCU11UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6F38182B2D74246E00932C02 /* Exceptions for "HackCU11" folder in "HackCU11" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				.swift,
+			);
+			target = 6FD69C662D7389B40001498C /* HackCU11 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		6F38182C2D74246E00932C02 /* Exceptions for "HackCU11" folder in "Compile Sources" phase from "HackCU11" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 6FD69C632D7389B40001498C /* Sources */;
+			membershipExceptions = (
+				.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6FD69C692D7389B40001498C /* HackCU11 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6F38182B2D74246E00932C02 /* Exceptions for "HackCU11" folder in "HackCU11" target */,
+				6F38182C2D74246E00932C02 /* Exceptions for "HackCU11" folder in "Compile Sources" phase from "HackCU11" target */,
+			);
 			path = HackCU11;
 			sourceTree = "<group>";
 		};
