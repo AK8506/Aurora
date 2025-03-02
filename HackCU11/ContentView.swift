@@ -84,40 +84,21 @@ struct ContentView: View {
                 .padding(.bottom, 8)
             }
 
-            // Show source info toggle
+  // Source info button - only shown when data is available
             if !sourceInfoText.isEmpty {
-              Divider()
-                .background(Color.gray.opacity(0.5))
-                .padding(.vertical, 4)
-
               Button(action: {
-                withAnimation {
-                  showSourceInfo.toggle()
-                }
+                showingSourceInfoPopup = true  // Show the popup instead
               }) {
                 HStack {
-                  Text(
-                    showSourceInfo
-                      ? "Hide Source Information" : "Show Source Information"
-                  )
-                  .foregroundColor(.blue)
-
-                  Image(
-                    systemName: showSourceInfo ? "chevron.up" : "chevron.down"
-                  )
-                  .foregroundColor(.blue)
+                  Image(systemName: "info.circle")
+                        .foregroundColor(.purple)
+                  Text("Info about the source")
+                        .foregroundColor(.purple)
+                    .underline()
                 }
               }
-
-              if showSourceInfo {
-                VStack(alignment: .leading, spacing: 6) {
-                  Text(sourceInfoText)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .padding(.top, 4)
-                }
-                .transition(.opacity)
-              }
+              .padding(.leading, 16)
+              .buttonStyle(PlainButtonStyle())
             }
           }
           .padding()
@@ -131,23 +112,8 @@ struct ContentView: View {
               .stroke(Color.black, lineWidth: 2)
           )
           .padding()
-
-          // Source info button - only shown when data is available
-          if !sourceInfoText.isEmpty {
-            Button(action: {
-              showingSourceInfoPopup = true  // Show the popup instead
-            }) {
-              HStack {
-                Image(systemName: "info.circle")
-                  .foregroundColor(.blue)
-                Text("Info about the source")
-                  .foregroundColor(.blue)
-                  .underline()
-              }
-            }
-            .padding(.leading, 16)
-            .buttonStyle(PlainButtonStyle())
-          }
+// we want ts
+          
         }
       }
       .padding()
